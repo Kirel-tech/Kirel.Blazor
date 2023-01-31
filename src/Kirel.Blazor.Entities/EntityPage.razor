@@ -1,0 +1,9 @@
+﻿@typeparam TCreateDto
+@typeparam TUpdateDto
+@typeparam TDto
+@inherits EntityComponentBase<TCreateDto, TUpdateDto, TDto>
+
+
+@Content
+<MudButton hidden="@(Options.Action != EntityAction.Create)" Color="Color.Primary" OnClick="OnCreate">Create</MudButton>
+<MudButton hidden="@(Options.Action != EntityAction.Edit)" Color="Color.Primary" OnClick="OnUpdate">Update</MudButton>

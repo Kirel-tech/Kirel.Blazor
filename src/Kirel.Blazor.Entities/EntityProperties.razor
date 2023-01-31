@@ -1,0 +1,36 @@
+﻿@typeparam TCreateDto
+@typeparam TUpdateDto
+@typeparam TDto
+
+@{
+    var readonlyProps = _readonlyPropNames[Options.Action];
+    foreach (var property in _allProperties)
+    {
+        var disabled = readonlyProps.Contains(property.Name);
+        if (property.PropertyType == string.Empty.GetType())
+        {
+            var dtoProperty = new EntityDtoProperty<string>(property.Name, CreateDto, UpdateDto, Dto);
+            <MudTextField Disabled="@disabled" @bind-Value="@dtoProperty.Property" Label="@property.Name" Variant="Variant.Text"></MudTextField>
+        }
+        if (property.PropertyType == false.GetType())
+        {
+            var dtoProperty = new EntityDtoProperty<bool>(property.Name, CreateDto, UpdateDto, Dto);
+            <MudCheckBox Dense="true" @bind-Checked="@dtoProperty.Property" Disabled="@disabled" Label="@property.Name" LabelPosition="LabelPosition.End"></MudCheckBox>
+        }
+        if (property.PropertyType == float.MinValue.GetType())
+        {
+            var dtoProperty = new EntityDtoProperty<float>(property.Name, CreateDto, UpdateDto, Dto);
+            <MudNumericField Disabled="@disabled" @bind-Value="@dtoProperty.Property" Label="@property.Name" Variant="Variant.Text"></MudNumericField>
+        }
+        if (property.PropertyType == int.MinValue.GetType())
+        {
+            var dtoProperty = new EntityDtoProperty<int>(property.Name, CreateDto, UpdateDto, Dto);
+            <MudNumericField Disabled="@disabled" @bind-Value="@dtoProperty.Property" Label="@property.Name" Variant="Variant.Text"></MudNumericField>
+        }
+        if (property.PropertyType == typeof(DateTime) || property.PropertyType == typeof(DateTime?))
+        {
+            var dtoProperty = new EntityDtoProperty<DateTime?>(property.Name, CreateDto, UpdateDto, Dto);
+            <MudDatePicker Label="@property.Name" Disabled="@disabled" @bind-Date="@dtoProperty.Property" Mask="@(new DateMask("dd.MM.yyyy"))" DateFormat="dd.MM.yyyy"/>
+        }
+    }
+}
