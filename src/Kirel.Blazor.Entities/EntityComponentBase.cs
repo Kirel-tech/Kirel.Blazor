@@ -24,8 +24,11 @@ public class EntityComponentBase<TCreateDto, TUpdateDto, TDto> : ComponentBase
     /// </summary>
     [Inject]
     protected IHttpClientFactory HttpClientFactory { get; set; } = null!;
+    /// <summary>
+    /// AutoMapper instance
+    /// </summary>
     [Inject]
-    private IMapper Mapper { get; set; } = null!;
+    protected IMapper Mapper { get; set; } = null!;
     /// <summary>
     /// Dialog content
     /// </summary>
