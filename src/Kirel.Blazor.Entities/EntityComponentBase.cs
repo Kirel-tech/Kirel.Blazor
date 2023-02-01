@@ -86,7 +86,9 @@ public class EntityComponentBase<TCreateDto, TUpdateDto, TDto> : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         _httpClient = HttpClientFactory.CreateClient(HttpClientName);
-        Mapper.Map(Dto, UpdateDto);
+        if (UpdateDto != null && Dto != null)
+            Mapper.Map(Dto, UpdateDto);
+        
         await base.OnInitializedAsync();
     }
 
