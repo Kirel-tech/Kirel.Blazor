@@ -17,12 +17,13 @@ namespace Kirel.Blazor.Entities;
 public class EntityComponentBase<TCreateDto, TUpdateDto, TDto> : ComponentBase
 {
     [Inject]
-    private HttpClient HttpClient { get; set; } = null!;
-    [Inject]
     private ISnackbar Snackbar { get; set; } = null!;
 
+    /// <summary>
+    /// Microsoft http client factory
+    /// </summary>
     [Inject]
-    private IHttpClientFactory HttpClientFactory { get; set; } = null!;
+    protected IHttpClientFactory HttpClientFactory { get; set; } = null!;
     [Inject]
     private IMapper Mapper { get; set; } = null!;
     /// <summary>
@@ -78,11 +79,13 @@ public class EntityComponentBase<TCreateDto, TUpdateDto, TDto> : ComponentBase
     /// </summary>
     [Parameter]
     public Func<TDto?, Task>? AfterDtoReceived { get; set; }
+    
+    private HttpClient _httpClient = null!;
 
     /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
-        HttpClient = HttpClientFactory.CreateClient(HttpClientName);
+        _httpClient = HttpClientFactory.CreateClient(HttpClientName);
         Mapper.Map(Dto, UpdateDto);
         await base.OnInitializedAsync();
     }
@@ -105,7 +108,7 @@ public class EntityComponentBase<TCreateDto, TUpdateDto, TDto> : ComponentBase
     protected virtual async Task OnCreate()
     {
         BeforeCreateRequest?.Invoke(CreateDto);
-        var resp = await HttpClient.PostAsJsonAsync(HttpRelativeUrl, CreateDto);
+        var resp = await _httpClient.PostAsJsonAsync(HttpRelativeUrl, CreateDto);
         if (resp.IsSuccessStatusCode)
         {
             var respDto = await resp.Content.ReadFromJsonAsync<TDto>();
@@ -135,7 +138,7 @@ public class EntityComponentBase<TCreateDto, TUpdateDto, TDto> : ComponentBase
         BeforeUpdateRequest?.Invoke(UpdateDto);
         var idProp = Dto?.GetType().GetProperties().FirstOrDefault(p => p.Name == "Id");
         var id = idProp?.GetValue(Dto)?.ToString();
-        var resp = await HttpClient.PutAsJsonAsync($"{HttpRelativeUrl}/{id}", UpdateDto);
+        var resp = await _httpClient.PutAsJsonAsync($"{HttpRelativeUrl}/{id}", UpdateDto);
         if (resp.IsSuccessStatusCode)
         {
             var respDto = await resp.Content.ReadFromJsonAsync<TDto>();
