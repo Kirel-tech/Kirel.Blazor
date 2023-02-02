@@ -15,17 +15,20 @@ public partial class EntityDialog<TCreateDto, TUpdateDto, TDto> : EntityComponen
     private string? _tittle = "";
 
     /// <inheritdoc />
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         _tittle = MudDialog?.Title;
-        MudDialog?.SetTitle($"{Options.Action} {_tittle}");
-        return base.OnInitializedAsync();
+        await base.OnInitializedAsync().ContinueWith(_ => MudDialog?.SetTitle($"{Options?.Action} {_tittle}"));;
     }
 
     /// <inheritdoc />
     protected override async Task OnCreate()
     {
-        await base.OnCreate();
-        MudDialog?.SetTitle($"{Options.Action} {_tittle}");
+        await base.OnCreate().ContinueWith(_ => MudDialog?.SetTitle($"{Options?.Action} {_tittle}"));
+    }
+    /// <inheritdoc />
+    protected override async Task OnUpdate()
+    {
+        await base.OnUpdate().ContinueWith(_ => MudDialog?.SetTitle($"{Options?.Action} {_tittle}"));
     }
 }
