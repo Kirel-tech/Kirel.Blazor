@@ -10,6 +10,9 @@ namespace Kirel.Blazor.Entities;
 /// <typeparam name="TUpdateDto">Update entity data transfer object</typeparam>
 /// <typeparam name="TDto">Get entity data transfer object</typeparam>
 public partial class EntityDialog<TCreateDto, TUpdateDto, TDto> : EntityComponentBase<TCreateDto, TUpdateDto, TDto>
+where TCreateDto : new()
+where TUpdateDto : new()
+where TDto : new()
 {
     [CascadingParameter] MudDialogInstance? MudDialog { get; set; }
     private string? _tittle = "";

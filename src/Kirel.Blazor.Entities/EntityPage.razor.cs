@@ -7,6 +7,9 @@
 /// <typeparam name="TUpdateDto">Update entity data transfer object</typeparam>
 /// <typeparam name="TDto">Get entity data transfer object</typeparam>
 public partial class EntityPage<TCreateDto, TUpdateDto, TDto> : EntityComponentBase<TCreateDto, TUpdateDto, TDto>
+where TCreateDto : new()
+where TUpdateDto : new()
+where TDto : new()
 {
     
 }

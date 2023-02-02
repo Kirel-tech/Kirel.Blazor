@@ -15,6 +15,9 @@ namespace Kirel.Blazor.Entities;
 /// <typeparam name="TUpdateDto">Update entity data transfer object</typeparam>
 /// <typeparam name="TDto">Get entity data transfer object</typeparam>
 public class EntityComponentBase<TCreateDto, TUpdateDto, TDto> : ComponentBase
+where TCreateDto : new()
+where TUpdateDto : new()
+where TDto : new()
 {
     [Inject]
     private ISnackbar Snackbar { get; set; } = null!;
@@ -39,7 +42,6 @@ public class EntityComponentBase<TCreateDto, TUpdateDto, TDto> : ComponentBase
     /// </summary>
     [Parameter]
     public TCreateDto? CreateDto  { get; set; }
-
     /// <summary>
     /// Data transfer object for update the entity
     /// </summary>
@@ -54,7 +56,7 @@ public class EntityComponentBase<TCreateDto, TUpdateDto, TDto> : ComponentBase
     /// Options for control dialog and fields entity settings
     /// </summary>
     [Parameter]
-    public EntityOptions Options { get; set; } = new () { Action = EntityAction.Create };
+    public EntityOptions? Options { get; set; }
 
     /// <summary>
     /// Http client instance name
@@ -89,10 +91,22 @@ public class EntityComponentBase<TCreateDto, TUpdateDto, TDto> : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         _httpClient = HttpClientFactory.CreateClient(HttpClientName);
-        if (UpdateDto != null && Dto != null)
-            Mapper.Map(Dto, UpdateDto);
-        
+        Options ??= new EntityOptions()
+        {
+            Action = DetermineAction()
+        };
+        UpdateDto ??= new TUpdateDto();
+        CreateDto ??= new TCreateDto();
+        Dto ??= new TDto();
+        Mapper.Map(Dto, UpdateDto);
         await base.OnInitializedAsync();
+    }
+
+    private EntityAction DetermineAction()
+    {
+        if (CreateDto != null)
+            return EntityAction.Create;
+        return UpdateDto != null ? EntityAction.Edit : EntityAction.Read;
     }
 
     private async Task ShowValidationErrors(HttpResponseMessage resp)
@@ -122,10 +136,10 @@ public class EntityComponentBase<TCreateDto, TUpdateDto, TDto> : ComponentBase
             if (UpdateDto != null)
             {
                 Mapper.Map(respDto, UpdateDto);
-                Options.Action = EntityAction.Edit;
+                Options!.Action = EntityAction.Edit;
             } 
             else
-                Options.Action = EntityAction.Read;
+                Options!.Action = EntityAction.Read;
             
             Snackbar.Add($"Successfully created!", Severity.Success);
         }
