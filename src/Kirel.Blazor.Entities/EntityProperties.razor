@@ -30,7 +30,7 @@
         if (property.PropertyType == typeof(DateTime) || property.PropertyType == typeof(DateTime?))
         {
             var dtoProperty = new EntityDtoProperty<DateTime?>(property.Name, CreateDto, UpdateDto, Dto);
-            <MudDatePicker Label="@property.Name" Disabled="@disabled" @bind-Date="@dtoProperty.Property" Mask="@(new DateMask("dd.MM.yyyy"))" DateFormat="dd.MM.yyyy"/>
+            <MudTextField Disabled="@disabled"  @bind-Value="dtoProperty.Property" T="DateTime?" Format="s" Label="@property.Name" InputType="InputType.DateTimeLocal"/>
         }
     }
 }
