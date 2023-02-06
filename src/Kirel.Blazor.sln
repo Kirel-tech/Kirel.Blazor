@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kirel.Blazor.Entities", "Kirel.Blazor.Entities\Kirel.Blazor.Entities.csproj", "{32EB53D9-15A9-4424-B83A-A5CCE1A303BC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kirel.Blazor.Shared", "Kirel.Blazor.Shared\Kirel.Blazor.Shared.csproj", "{8E8E478E-45A9-4F69-871D-15D85F095776}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{32EB53D9-15A9-4424-B83A-A5CCE1A303BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32EB53D9-15A9-4424-B83A-A5CCE1A303BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32EB53D9-15A9-4424-B83A-A5CCE1A303BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E8E478E-45A9-4F69-871D-15D85F095776}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E8E478E-45A9-4F69-871D-15D85F095776}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E8E478E-45A9-4F69-871D-15D85F095776}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E8E478E-45A9-4F69-871D-15D85F095776}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
