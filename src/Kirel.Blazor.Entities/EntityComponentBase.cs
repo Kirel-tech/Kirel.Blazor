@@ -109,7 +109,7 @@ where TDto : new()
         return UpdateDto != null ? EntityAction.Edit : EntityAction.Read;
     }
 
-    private async Task ShowValidationErrors(HttpResponseMessage resp)
+    protected virtual async Task HandleValidationErrors(HttpResponseMessage resp)
     {
         var validationDto = await resp.Content.ReadFromJsonAsync<ValidationErrorsDto>();
         foreach (var filedAndMessages in validationDto!.Errors)
@@ -145,7 +145,7 @@ where TDto : new()
         }
         else if (resp.StatusCode == HttpStatusCode.BadRequest)
         {
-            await ShowValidationErrors(resp);
+            await HandleValidationErrors(resp);
         }
     }
     
@@ -171,7 +171,7 @@ where TDto : new()
         } 
         else if (resp.StatusCode == HttpStatusCode.BadRequest)
         {
-            await ShowValidationErrors(resp);
+            await HandleValidationErrors(resp);
         }
     }
 }
