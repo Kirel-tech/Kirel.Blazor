@@ -3,34 +3,36 @@
 @typeparam TDto
 
 @{
-    var readonlyProps = _readonlyPropNames[Options.Action];
+    var disabledProps = _disabledPropNames[Options.Action];
+
     foreach (var property in _allProperties)
     {
-        var disabled = readonlyProps.Contains(property.Name);
+        var disabled = disabledProps.Contains(property.Name) && Options.Action != EntityAction.Read;
+        var propReadonly = Options.Action == EntityAction.Read;
         if (property.PropertyType == string.Empty.GetType())
         {
             var dtoProperty = new EntityDtoProperty<string>(property.Name, CreateDto, UpdateDto, Dto);
-            <MudTextField Disabled="@disabled" @bind-Value="@dtoProperty.Property" Label="@property.Name" Variant="Variant.Text"></MudTextField>
+            <MudTextField Disabled="@disabled" Readonly="@propReadonly" @bind-Value="@dtoProperty.Property" Label="@property.Name" Variant="Variant.Text"></MudTextField>
         }
         if (property.PropertyType == false.GetType())
         {
             var dtoProperty = new EntityDtoProperty<bool>(property.Name, CreateDto, UpdateDto, Dto);
-            <MudCheckBox Dense="true" @bind-Checked="@dtoProperty.Property" Disabled="@disabled" Label="@property.Name" LabelPosition="LabelPosition.End"></MudCheckBox>
+            <MudCheckBox Dense="true" @bind-Checked="@dtoProperty.Property" Disabled="@disabled" Readonly="@propReadonly" Label="@property.Name" LabelPosition="LabelPosition.End"></MudCheckBox>
         }
         if (property.PropertyType == float.MinValue.GetType())
         {
             var dtoProperty = new EntityDtoProperty<float>(property.Name, CreateDto, UpdateDto, Dto);
-            <MudNumericField Disabled="@disabled" @bind-Value="@dtoProperty.Property" Label="@property.Name" Variant="Variant.Text"></MudNumericField>
+            <MudNumericField Disabled="@disabled" Readonly="@propReadonly" @bind-Value="@dtoProperty.Property" Label="@property.Name" Variant="Variant.Text"></MudNumericField>
         }
         if (property.PropertyType == int.MinValue.GetType())
         {
             var dtoProperty = new EntityDtoProperty<int>(property.Name, CreateDto, UpdateDto, Dto);
-            <MudNumericField Disabled="@disabled" @bind-Value="@dtoProperty.Property" Label="@property.Name" Variant="Variant.Text"></MudNumericField>
+            <MudNumericField Disabled="@disabled" Readonly="@propReadonly" @bind-Value="@dtoProperty.Property" Label="@property.Name" Variant="Variant.Text"></MudNumericField>
         }
         if (property.PropertyType == typeof(DateTime) || property.PropertyType == typeof(DateTime?))
         {
             var dtoProperty = new EntityDtoProperty<DateTime?>(property.Name, CreateDto, UpdateDto, Dto);
-            <MudTextField Disabled="@disabled"  @bind-Value="dtoProperty.Property" T="DateTime?" Format="s" Label="@property.Name" InputType="InputType.DateTimeLocal"/>
+            <MudTextField Disabled="@disabled" Readonly="@propReadonly"  @bind-Value="dtoProperty.Property" T="DateTime?" Format="s" Label="@property.Name" InputType="InputType.DateTimeLocal"/>
         }
     }
 }

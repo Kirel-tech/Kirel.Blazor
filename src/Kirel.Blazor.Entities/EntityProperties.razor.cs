@@ -12,7 +12,7 @@ namespace Kirel.Blazor.Entities;
 /// <typeparam name="TDto">Get entity data transfer object</typeparam>
 public partial class EntityProperties<TCreateDto, TUpdateDto, TDto> : ComponentBase
 {
-    private readonly Dictionary<EntityAction, List<string>> _readonlyPropNames = new ();
+    private readonly Dictionary<EntityAction, List<string>> _disabledPropNames = new ();
     private List<PropertyInfo> _allProperties = new ();
     
     /// <summary>
@@ -50,15 +50,15 @@ public partial class EntityProperties<TCreateDto, TUpdateDto, TDto> : ComponentB
         
         var updateDtoPropNames = updateDtoProperties.Select(p => p.Name);
         var createDtoPropNames = createDtoProperties.Select(p => p.Name);
-        _readonlyPropNames.Add(EntityAction.Edit, _allProperties
+        _disabledPropNames.Add(EntityAction.Edit, _allProperties
             .Where(p => !updateDtoPropNames.Contains(p.Name))
             .Select(p => p.Name)
             .ToList());
-        _readonlyPropNames.Add(EntityAction.Create, _allProperties
+        _disabledPropNames.Add(EntityAction.Create, _allProperties
             .Where(p => !createDtoPropNames.Contains(p.Name))
             .Select(p => p.Name)
             .ToList());
-        _readonlyPropNames.Add(EntityAction.Read, _allProperties
+        _disabledPropNames.Add(EntityAction.Read, _allProperties
             .Select(p => p.Name)
             .ToList());
         
